@@ -1,1 +1,2 @@
-# Hnefatafl-AR
+### Hnefatafl-AR ### 
+#Math.Rand(f.give(0));
