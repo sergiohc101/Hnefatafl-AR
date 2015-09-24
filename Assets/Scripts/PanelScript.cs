@@ -30,26 +30,36 @@ public class PanelScript : MonoBehaviour {
 			panels[2] = tabPanel3;
 			panels[3] = tabPanel4;
 		}
+		ShowTab(1);
 	}
 
 	void ShowTab(int tabIndex)
 	{
 		Debug.Log ("TAB = " + tabIndex);
 
-		//Transform ScrollRect = new Transform;
-		//Transform PageSelector = new Transform;
+		Transform ScrollRectContainer;
+
+		if(tabIndex == -1){	 										//LAST TAB								
+			for(int j = 0; j < 4; j++)
+				panels[j].GetChild(0).SendMessage("ResetPage");		//RESET ALL SCROLLRECTS
+			tabIndex = 1;
+		}
+
 		for(int i = 0; i < 4; i++) {
 			if(panels[i] != panels[tabIndex-1]){								//DISABLING...
 				panels[i].GetComponent<Image>().enabled = false; 				//Panel Image
-				panels[i].GetChild(0).GetChild(0).gameObject.SetActive(false); 	//ScrollRectContainer
+				ScrollRectContainer = panels[i].GetChild(0).GetChild(0);		//ScrollRectContainer
+				for(int j= 0; j < ScrollRectContainer.childCount; j++)
+					ScrollRectContainer.GetChild(j).GetComponent<Image>().enabled = false; 	//Images
 				panels[i].GetChild(1).gameObject.SetActive(false);				//PageSelector
-				//ScrollRect.GetComponent<Image>().enabled = false;
-				//PageSelector.gameObject.SetActive(false);
-				//panels[i].gameObject.SetActive(false);
 			}
 		}
+		//ENABLE SELECTED PANEL
+		panels[tabIndex-1].parent.SetAsLastSibling();							//TabPanel
 		panels[tabIndex-1].GetComponent<Image>().enabled = true; 				//Panel Image
-		panels[tabIndex-1].GetChild(0).GetChild(0).gameObject.SetActive(true);	//ScrollRectContainer
+		ScrollRectContainer = panels[tabIndex-1].GetChild(0).GetChild(0);		//ScrollRectContainer
+		for (int j= 0; j < ScrollRectContainer.childCount; j++)
+			ScrollRectContainer.GetChild(j).GetComponent<Image>().enabled = true;//Images
 		panels[tabIndex-1].GetChild(1).gameObject.SetActive(true);				//PageSelector
 	}
 	

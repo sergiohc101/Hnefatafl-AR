@@ -111,14 +111,20 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         }
     }
 
-    //------------------------------------------------------------------------
-    private void SetPagePositions() {
-        int width = 0;
-        int offsetX = 0;
-        int containerWidth = 0;
-        int containerHeight = 0;
-
-        if (_horizontal) {
+	//------------------------------------------------------------------------
+	private void ResetPage() {
+		SetPage(startingPage);
+		SetPageSelection(startingPage);
+	}
+	
+	//------------------------------------------------------------------------
+	private void SetPagePositions() {
+		int width = 0;
+		int offsetX = 0;
+		int containerWidth = 0;
+		int containerHeight = 0;
+		
+		if (_horizontal) {
             // screen width in pixels of scrollrect window
             width = (int)_scrollRectRect.rect.width;
             Debug.Log("width= " + width);
@@ -128,13 +134,8 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             containerWidth = width * _pageCount;
             // limit fast swipe length - beyond this length it is fast swipe no more
             _fastSwipeThresholdMaxLimit = width;
-        } else {
+        } else 
 			Debug.LogWarning("Check Orientation Var...");
-            //height = (int)_scrollRectRect.rect.height;
-            //  offsetY = height / 2;
-            //  containerHeight = height * _pageCount;
-            //  _fastSwipeThresholdMaxLimit = height;
-        }
 
         // set width of container
         Vector2 newSize = new Vector2(containerWidth, containerHeight);
@@ -142,7 +143,9 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
 		_container.sizeDelta = newSize;
         Vector2 newPosition = new Vector2(containerWidth / 2, containerHeight / 2);
-        _container.anchoredPosition = newPosition;
+		Debug.Log("NPosition= " + newPosition.ToString());
+		//_container.anchoredPosition = new Vector2(0f,0f);
+		_container.anchoredPosition = newPosition;
 
         // delete any previous settings
         _pagePositions.Clear();
@@ -152,6 +155,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             RectTransform child = _container.GetChild(i).GetComponent<RectTransform>();
             Vector2 childPosition;
             childPosition = new Vector2(i * width - containerWidth / 2 + offsetX, 0f);
+			//childPosition = new Vector2(i*20, 10f);
             child.anchoredPosition = childPosition;
             _pagePositions.Add(-childPosition);
         }
@@ -220,7 +224,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     //------------------------------------------------------------------------
     private void NextScreen() {
 		if(_currentPage + 1 > _pageCount-1)
-			if(index == 4)	panel.SendMessage("ShowTab",1);
+			if(index == 4)	panel.SendMessage("ShowTab",-1);
 			else panel.SendMessage("ShowTab",index+1);
         LerpToPage(_currentPage + 1);
     }
@@ -236,15 +240,15 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     private int GetNearestPage() {
         // based on distance from current position, find nearest page
         Vector2 currentPosition = _container.anchoredPosition;
-		//Debug.Log ("FinalPos= " + currentPosition.ToString());
-		//Debug.Log("MAX " + _container.offsetMax.x);
-		//Debug.Log("min " + _container.offsetMin.x);
-		if(_container.offsetMin.x > -450 && index!=1){
+		Debug.Log ("FinalPos= " + currentPosition.ToString());
+		Debug.Log("MAX " + _container.offsetMax.x);
+		Debug.Log("min " + _container.offsetMin.x);
+		if(_container.offsetMin.x > -250 && index!=1){
 			panel.SendMessage("ShowTab",index-1);  
 			Debug.Log("Get BACK in da haus");
 		}
-		if(_container.offsetMax.x < 530)  {
-			if(index == 4)	panel.SendMessage("ShowTab",1);
+		if(_container.offsetMax.x < 250)  {
+			if(index == 4)	panel.SendMessage("ShowTab",-1);
 			else{
 			panel.SendMessage("ShowTab",index+1); 
 			Debug.Log("Next Page ->");
