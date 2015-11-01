@@ -8,7 +8,7 @@ PlayerSettings:
   defaultScreenOrientation: 3
   targetDevice: 2
   targetGlesGraphics: 1
-  targetIOSGraphics: -1
+  targetIOSGraphics: 2
   targetResolution: 0
   accelerometerFrequency: 60
   companyName: BonzoLabs
@@ -112,7 +112,7 @@ PlayerSettings:
   iOSLaunchScreenFillPct: 100
   iOSLaunchScreenSize: 100
   iOSLaunchScreenCustomXibPath: 
-  AndroidTargetDevice: 0
+  AndroidTargetDevice: 3
   AndroidSplashScreenScale: 0
   AndroidKeystoreName: 
   AndroidKeyaliasName: 
@@ -168,6 +168,8 @@ PlayerSettings:
   spritePackerPolicy: 
   scriptingDefineSymbols:
     2: 
+    4: VUFORIA_IOS_SETTINGS
+    7: VUFORIA_SAMPLE_ORIENTATION_SETTINGS;VUFORIA_ANDROID_SETTINGS
   metroPackageName: InstructionsPanel
   metroPackageLogo: 
   metroPackageLogo140: 
@@ -266,7 +268,7 @@ PlayerSettings:
   - iOS::ScriptingBackend
   iOS::Architecture: 2
   iOS::EnableIncrementalBuildSupportForIl2cpp: 0
-  iOS::ScriptingBackend: 0
+  iOS::ScriptingBackend: 1
   firstStreamedLevelWithResources: 0
   unityRebuildLibraryVersion: 9
   unityForwardCompatibleVersion: 39
