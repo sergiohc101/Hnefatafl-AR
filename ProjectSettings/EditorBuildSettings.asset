@@ -10,4 +10,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PI.unity
   - enabled: 1
-    path: Assets/Scenes/PDI.unity
+    path: Assets/Scenes/PDC.unity

@@ -1639,7 +1639,7 @@ Transform:
   m_LocalScale: {x: 37.9948769, y: 37.9949226, z: 37.9948921}
   m_Children: []
   m_Father: {fileID: 1976834930}
-  m_RootOrder: 8
+  m_RootOrder: 7
 --- !u!95 &252208882
 Animator:
   serializedVersion: 3
@@ -7125,7 +7125,7 @@ Transform:
   m_LocalScale: {x: 37.9948769, y: 37.9949226, z: 37.9948921}
   m_Children: []
   m_Father: {fileID: 1976834930}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!95 &970462536
 Animator:
   serializedVersion: 3
@@ -11664,7 +11664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1806690506
 Transform:
   m_ObjectHideFlags: 0
@@ -13211,8 +13211,8 @@ Transform:
   - {fileID: 95372295}
   - {fileID: 265514614}
   - {fileID: 1417274716}
-  - {fileID: 970462535}
   - {fileID: 252208881}
+  - {fileID: 970462535}
   - {fileID: 15939896}
   - {fileID: 1976683395}
   - {fileID: 1447730481}

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: TranspMarkerCore
+  m_Shader: {fileID: 4800000, guid: e1f50dc041f1545edbb228f8daea22a1, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 25e7445fe44c18d4f85e237ce1f45c8b, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _Shininess
+        second: .253233522
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .867647052, g: .452962786, b: .452962786, a: 1}
+      data:
+        first:
+          name: _SpecColor
+        second: {r: .669117689, g: .555958092, b: .555958092, a: 0}
+      data:
+        first:
+          name: _Emission
+        second: {r: .801470578, g: .601102948, b: .601102948, a: 0}
