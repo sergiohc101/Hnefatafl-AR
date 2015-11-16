@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class LocalGame : Game {
+public class LocalGame : Game {
 	
 	LocalPlayerPDC player1;
 	LocalPlayerPDC player2;

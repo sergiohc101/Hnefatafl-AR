@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class NetworkGame : Game {
+public class NetworkGame : Game {
 	
 	LocalPlayerPI player1;
 	RemotePlayer player2;
