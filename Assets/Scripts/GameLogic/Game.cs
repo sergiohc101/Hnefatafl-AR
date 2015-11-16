@@ -12,7 +12,7 @@ public abstract class Game : MonoBehaviour {
 
 	
 	protected abstract void Awake(); // Initialize class members
-	public abstract void performAction( Action a );
+	public abstract void performAction( GameAction a );
 	public abstract void endTurn();
 
 	void Start()

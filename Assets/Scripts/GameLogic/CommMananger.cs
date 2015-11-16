@@ -5,6 +5,6 @@ public abstract class CommManager {
 
 	// static Queue<Action> actionsQueue;
 
-	public abstract void sendAction ( Action a );
+	public abstract void sendAction ( GameAction a );
 	protected abstract void onActionReceived ();
 }

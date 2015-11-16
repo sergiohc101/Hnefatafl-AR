@@ -10,11 +10,11 @@ public abstract class NetworkGame : Game {
 	{
 		
 	}
-	public override void performAction ( Action a )
+	public override void performAction ( GameAction a )
 	{
 		if (currentPlayer is RemotePlayer) //  currentPlayer == player2
 			a.execute ();
-		else if (a.validate) 
+		else if (a.validate ()) 
 		{
 			// Send Action
 			a.execute ();

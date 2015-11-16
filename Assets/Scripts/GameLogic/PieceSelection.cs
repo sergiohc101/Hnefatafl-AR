@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PieceSelection : Action 
+public class PieceSelection : GameAction
 {
 	int pieceIndex;
 	bool belongsToAttacker;

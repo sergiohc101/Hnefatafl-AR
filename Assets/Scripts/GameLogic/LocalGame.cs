@@ -11,9 +11,9 @@ public abstract class LocalGame : Game {
 	{
 		
 	}
-	public override void performAction( Action a )
+	public override void performAction( GameAction a )
 	{
-		if ( a.validate )
+		if ( a.validate () )
 			a.execute ();
 	}
 	public override void endTurn()

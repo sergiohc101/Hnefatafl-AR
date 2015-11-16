@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PieceMove : Action 
+public class PieceMove : GameAction 
 {
 	Vector2 squareIndex;
 	

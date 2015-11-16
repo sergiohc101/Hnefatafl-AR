@@ -25,7 +25,7 @@ public class BattleManager : MonoBehaviour {
 
 	public void onClickLoadBattle(){
 		if (battle == "bb") {
-			Application.LoadLevel("PDC");
+			Application.LoadLevel("NewPDCTest");
 		} else if (battle == "fb") {
 			Application.LoadLevel("PI");
 		}

@@ -3,5 +3,5 @@ using System.Collections;
 
 public abstract class ValidateAction {
 
-	public abstract bool validate ( Action a );
+	public abstract bool validate ( GameAction a );
 }

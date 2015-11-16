@@ -500,21 +500,21 @@ public class Cardboard : MonoBehaviour {
 
   /// Emitted whenever a trigger pull occurs.  If #TapIsTrigger is set, then it is also
   /// emitted when a screen tap occurs.
-  public event Action OnTrigger;
+  public event System.Action OnTrigger;
 
   /// Emitted whenever the viewer is tilted on its side.  If #TapIsTrigger is set, the
   /// Escape key issues this as well.
   /// @note On Android, if #TapIsTrigger is off, a tilt event is received as an Escape key.
   /// Unity also sees the System Back button as an Escape key.
   public event Action OnTilt;
-
+	
   /// Emitted whenever the app should respond to a possible change in the device viewer
   /// profile, that is, the QR code scanned by the user.
   public event Action OnProfileChange;
-
+	
   /// Emitted whenever the user presses the "VR Back Button".
   public event Action OnBackButton;
-
+	
   /// Whether the Cardboard trigger was pulled. True for exactly one complete frame
   /// after each pull.
   public bool Triggered { get; private set; }
@@ -561,7 +561,7 @@ public class Cardboard : MonoBehaviour {
     device.profileChanged = false;
     device.backButtonPressed = false;
     // All flags updated.  Now emit events.
-    if (Tilted && OnTilt != null) {
+	if (Tilted && OnTilt != null) {
       OnTilt();
     }
     if (Triggered && OnTrigger != null) {
