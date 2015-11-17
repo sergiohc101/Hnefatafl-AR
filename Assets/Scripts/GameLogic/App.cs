@@ -3,8 +3,18 @@ using System.Collections;
 
 public class App : MonoBehaviour {
 
+	public Game game;
+
 	void Awake () {
-		Game game = new LocalGame ();
-		game.p
+		// Decide which type of game will be played:
+		game = new LocalGame ();
+	}
+
+	void Start () {
+		game.initialize ();
+	}
+
+	void Update () {
+		game.update ();
 	}
 }

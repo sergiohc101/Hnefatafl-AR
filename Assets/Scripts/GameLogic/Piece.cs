@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Piece : Selectable {
 
-	private int index;	// Index of the piece within the pieces array
+	public int index;	// Index of the piece within the pieces array
 
 	// rollOver corroutine
 	public override void rollOver ()

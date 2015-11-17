@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class LocalPlayerPI : Player {
+public class LocalPlayerPI : Player {
 
 	//Selectable selectablePointed;
 

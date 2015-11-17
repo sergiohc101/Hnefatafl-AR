@@ -6,15 +6,15 @@ public class LocalGame : Game {
 	LocalPlayerPDC player1;
 	LocalPlayerPDC player2;
 
-
-	protected override void Awake()
+	public LocalGame()
 	{
-		
+		player1 = new LocalPlayerPDC ();
+		player2 = new LocalPlayerPDC ();
 	}
-	public override void performAction( GameAction a )
+	public override void performAction( GameAction gameAction )
 	{
-		if ( a.validate () )
-			a.execute ();
+		if ( gameAction.validate () )
+			gameAction.execute ();
 	}
 	public override void endTurn()
 	{

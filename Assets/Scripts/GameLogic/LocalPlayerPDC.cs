@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public abstract class LocalPlayerPDC : Player {
+public class LocalPlayerPDC : Player {
 
 	public override GameAction act(){
 		// Check input of touches
