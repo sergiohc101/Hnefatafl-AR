@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public enum SquareState {
 
-	VALID, DEFAULT, POINTED, TRACED
+	VALID, DEFAULT, POINTED, TRACED, VALID_TRACED
 
 }

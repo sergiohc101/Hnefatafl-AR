@@ -6,8 +6,11 @@ public abstract class Game {
 	public static TurnState turnState;
 	public static Piece[] pieces;
 	public static Square[,] board;
+	public static Marker marker;
+	
+	public static Trace moveTrace;
 
-	protected Player currentPlayer;
+	public static Player currentPlayer;
 	protected int p1Score, p2Score;
 	
 	public abstract void performAction( GameAction gameAction );
@@ -140,11 +143,121 @@ public abstract class Game {
 	public void update()
 	{
 		// Game loop
-		// switch ( turnState )
+		switch ( turnState )
+		{
+		case TurnState.PIECE_SELECTION:
+		case TurnState.PIECE_SELECTED:
+			GameAction incomingAction = currentPlayer.act ();
+			if( incomingAction != null )
+				performAction ( incomingAction );
+			break;
+			
+		case TurnState.APPLYNG_RULES:
+			applyRules ();
+			break;
+			
+		case TurnState.END:
+			endTurn ();
+			break;
+		}
 	}
 
 	private void applyRules()
 	{
 		// Calculate and execute victorie or captures
+		if ( victorie() )
+			return;
+		
+		// Calculate captures and execute piece coroutine die()
+		int r = (int)currentPlayer.selectedPiece.coord.x;
+		int c = (int)currentPlayer.selectedPiece.coord.y;
+		if( c < 9 )		checkCapture ( board [r,c+1], board [r,c+2] );
+		if( c > 2 )		checkCapture ( board [r,c-1], board [r,c-2] );
+		if( r < 9 )		checkCapture ( board [r+1,c], board [r+2,c] );
+		if( r > 2 )		checkCapture ( board [r-1,c], board [r-2,c] );
+		
+		
+		currentPlayer.selectedPiece = null;
+		turnState = TurnState.END; // ANIMATION
+	}
+
+	bool victorie()
+	{
+		if ( currentPlayer.isAttackerPlayer )
+		{		// Attack team 
+			return checkAttackVictorie ();
+		}
+		else
+		{		// Defense team
+			if ( currentPlayer.selectedPiece.transform.name == "pieceKing" )
+			{
+				Vector2 kingCoord = currentPlayer.selectedPiece.coord;
+				if ( (kingCoord.x == 0 || kingCoord.x == 10) &&
+				     (kingCoord.y == 0 || kingCoord.y == 10) )
+					return true;  // King is in corner
+			}
+			
+		}
+		return false;
+	}
+	
+	bool checkAttackVictorie()
+	{
+		int r = (int)currentPlayer.selectedPiece.coord.x;
+		int c = (int)currentPlayer.selectedPiece.coord.y;
+		if     ( c<10 && board[r,c+1].piece && board[r,c+1].piece.transform.name == "pieceKing" )
+		{
+			if ( (c==9  || (board[r,c+2].piece   && board[r,c+2].piece.transform.name == "pieceAttack")  ) && 
+			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.name == "pieceAttack")) &&
+			    ( r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.name == "pieceAttack")) )
+				return true;
+		}
+		else if( c>0  && board[r,c-1].piece && board[r,c-1].piece.transform.name == "pieceKing" )
+		{
+			if ( (c==1  || (board[r,c-2].piece   && board[r,c-2].piece.transform.name == "pieceAttack")  ) && 
+			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.name == "pieceAttack")) &&
+			     (r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.name == "pieceAttack")) )
+				return true;
+		}
+		else if( r<10 && board[r+1,c].piece && board[r+1,c].piece.transform.name == "pieceKing" )
+		{
+			if ( (r==9  || (board[r+2,c].piece   && board[r+2,c].piece.transform.name == "pieceAttack")  ) && 
+			     (c==0  || (board[r+1,c-1].piece && board[r+1,c-1].piece.transform.name == "pieceAttack")) &&
+			     (c==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.name == "pieceAttack")) )
+				return true;
+		}
+		else if( r>0  && board[r-1,c].piece && board[r-1,c].piece.transform.name == "pieceKing" )
+		{
+			if ( (r==1  || (board[r-2,c].piece   && board[r-2,c].piece.transform.name == "pieceAttack")  ) && 
+			     (c==0  || (board[r-1,c-1].piece && board[r-1,c-1].piece.transform.name == "pieceAttack")) &&
+			     (c==10 || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.name == "pieceAttack")) )
+				return true;
+		}
+		return false;
+	}
+	
+	void checkCapture ( Square sqrFirst, Square sqrSecond )
+	{
+		if ( (sqrSecond.coord.x == 0 || sqrSecond.coord.x == 10) &&
+		     (sqrSecond.coord.y == 0 || sqrSecond.coord.y == 10) ||
+		     (sqrSecond.coord.x == 5 && sqrSecond.coord.y == 5 ) )
+		{ 	
+			// sqrSecond is Hostil Zone
+			bool firstIsAttacker  = sqrFirst.piece.transform.name  == "pieceAttack";
+			if( firstIsAttacker  != currentPlayer.isAttackerPlayer && // first is Enemy
+			    sqrFirst.piece.transform.name != "pieceKing" )
+				sqrFirst.piece.die();
+		}
+		else if( sqrFirst.piece && sqrSecond.piece )
+		{
+			bool firstIsAttacker  = sqrFirst.piece.transform.name  == "pieceAttack";
+			bool secondIsAttacker = sqrSecond.piece.transform.name == "pieceAttack";
+			
+			if( firstIsAttacker  != currentPlayer.isAttackerPlayer &&  // first is Enemy
+			    secondIsAttacker == currentPlayer.isAttackerPlayer &&  // second is Teammate
+			    sqrFirst.piece.transform.name != "pieceKing" )
+				sqrFirst.piece.die();
+		}
+		
 	}
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class PieceSelection : GameAction
 {
 	int pieceIndex;
-	bool belongsToAttacker;
+	public bool belongsToAttacker;
 
 	public PieceSelection( int iPieceIndex, bool bta )
 	{
@@ -20,10 +20,35 @@ public class PieceSelection : GameAction
 
 	public override void execute ()
 	{
-		// Use the static members of Game
-		// Position "Marker" on selected piece
+		float h = Game.pieces[ pieceIndex ].transform.name == "PieceKing" ? 52f : 15f ;
+		Game.marker.translate ( Game.pieces[ pieceIndex ].transform.position +
+		                        new Vector3( 0f,  h, 0f ) );
+		Game.marker.gameObject.SetActive ( true );
+		
+		
 		// Reset valid squares for the previous selection (if any)
+		if ( Game.currentPlayer.selectedPiece ) 
+			setCrossOfSquares ( SquareState.DEFAULT, Game.currentPlayer.selectedPiece.coord );
+		
+		// Set new selection
+		Game.currentPlayer.selectedPiece = Game.pieces [pieceIndex];
+		
 		// Show valid squares for the new selection
+		setCrossOfSquares ( SquareState.VALID, Game.pieces [pieceIndex].coord );
+		CheckHostileZones ( Game.pieces [pieceIndex].transform.name );
+		
 		// Assign TurnState
+		Game.turnState = TurnState.PIECE_SELECTED;
+	}
+	
+	private void CheckHostileZones( string selectedPieceName )
+	{
+		if ( selectedPieceName != "PieceKing" )
+		{
+			Game.board [ 0, 0].state = SquareState.DEFAULT;
+			Game.board [ 0,10].state = SquareState.DEFAULT;
+			Game.board [10, 0].state = SquareState.DEFAULT;
+			Game.board [10,10].state = SquareState.DEFAULT;
+		}
 	}
 }
