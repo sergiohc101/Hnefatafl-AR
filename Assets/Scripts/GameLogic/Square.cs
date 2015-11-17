@@ -11,9 +11,9 @@ public class Square : Selectable {
 		state = SquareState.DEFAULT;
 	}
 
-	// rollOver corroutine
-	public override void rollOver ()
+	// rollOver coroutine
+	public override IEnumerator rollOver ()
 	{
-
+		yield return null;
 	}
 }
