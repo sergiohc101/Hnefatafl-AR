@@ -20,10 +20,10 @@ public class PieceSelection : GameAction
 
 	public override void execute ()
 	{
-		float h = Game.pieces[ pieceIndex ].transform.name == "PieceKing" ? 52f : 15f ;
-		Game.marker.translate ( Game.pieces[ pieceIndex ].transform.position +
-		                        new Vector3( 0f,  h, 0f ) );
+		float h = Game.pieces[ pieceIndex ].transform.tag == "King" ? 52f : 15f ;
 		Game.marker.gameObject.SetActive ( true );
+		Game.marker.translate ( Game.pieces[ pieceIndex ].transform.position +
+		                       new Vector3( 0f,  h, 0f ) );
 		
 		
 		// Reset valid squares for the previous selection (if any)
@@ -35,15 +35,15 @@ public class PieceSelection : GameAction
 		
 		// Show valid squares for the new selection
 		setCrossOfSquares ( SquareState.VALID, Game.pieces [pieceIndex].coord );
-		CheckHostileZones ( Game.pieces [pieceIndex].transform.name );
+		CheckHostileZones ( Game.pieces [pieceIndex].transform.tag );
 		
 		// Assign TurnState
 		Game.turnState = TurnState.PIECE_SELECTED;
 	}
 	
-	private void CheckHostileZones( string selectedPieceName )
+	private void CheckHostileZones( string selectedPieceTag )
 	{
-		if ( selectedPieceName != "PieceKing" )
+		if ( selectedPieceTag != "King" )
 		{
 			Game.board [ 0, 0].state = SquareState.DEFAULT;
 			Game.board [ 0,10].state = SquareState.DEFAULT;

@@ -12,15 +12,29 @@ public class Piece : Selectable {
 	}
 
 	// translate coroutine
-	public IEnumerator translate (Vector2 pieceDest)
+	public void translate (Vector2 pieceDest)
 	{
-		Transform targetSquare = Game.board[(int)pieceDest.y, (int)pieceDest.x].transform;
-		while (Vector3.Distance(transform.position, targetSquare.position) > 0.05f) {
-			transform.position = Vector3.Lerp(transform.position, targetSquare.position, 2f * Time.deltaTime);
-			yield return null;
-		}
-		//Debug.Log("Pieza trasladada!");
+        StartCoroutine(translateCoroutine(pieceDest));
 	}
+
+    private IEnumerator translateCoroutine(Vector2 pieceDest)
+    {
+        Transform targetSquare = Game.board[(int)pieceDest.y, (int)pieceDest.x].transform;
+        float progress = 0;
+        float startTime = Time.time;
+
+        while (progress < 1)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetSquare.position, progress);
+            progress = (Time.time - startTime) / 3f;
+            yield return null;
+        }
+
+		//Debug.Log("Pieza trasladada!");
+        transform.position = targetSquare.position;
+        Game.turnState = TurnState.APPLYNG_RULES;
+		Game.board[(int)pieceDest.y, (int)pieceDest.x].gameObject.SetActive(false);
+    }
 
 	// die coroutine
 	public IEnumerator die ()

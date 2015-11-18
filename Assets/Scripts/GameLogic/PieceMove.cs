@@ -18,19 +18,19 @@ public class PieceMove : GameAction
 	
 	public override void execute ()
 	{
+		Game.marker.gameObject.SetActive(false);		
 		// Reset squares valids for move
 		setCrossOfSquares ( SquareState.DEFAULT, Game.currentPlayer.selectedPiece.coord );
 		
 		// Call piece's coroutine "translate"
-		Game.currentPlayer.selectedPiece.translate ( Game.board [(int)squareIndex.x,
-		                                                         (int)squareIndex.y].
-		                                           				 transform.position );
+        Game.board[(int)squareIndex.y, (int)squareIndex.x].gameObject.SetActive(true);
+		Game.currentPlayer.selectedPiece.translate (squareIndex);
 		
 		// Set piece references and coord
-		Game.board [ (int)Game.currentPlayer.selectedPiece.coord.x,
-		 			 (int)Game.currentPlayer.selectedPiece.coord.y ].piece = null;
-		Game.board [ (int)squareIndex.x,
-		             (int)squareIndex.y ].piece = Game.currentPlayer.selectedPiece;
+		Game.board [ (int)Game.currentPlayer.selectedPiece.coord.y,
+		 			 (int)Game.currentPlayer.selectedPiece.coord.x ].piece = null;
+		Game.board [ (int)squareIndex.y,
+		             (int)squareIndex.x ].piece = Game.currentPlayer.selectedPiece;
 		Game.currentPlayer.selectedPiece.coord = squareIndex;
 		
 		

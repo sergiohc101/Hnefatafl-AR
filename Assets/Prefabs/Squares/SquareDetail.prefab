@@ -15,7 +15,7 @@ GameObject:
   - 65: {fileID: 6540668}
   m_Layer: 0
   m_Name: SquareDetail
-  m_TagString: Untagged
+  m_TagString: Square
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf6c5bdd5cbbae44aab3ed21386f7b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coord: {x: 0, y: 0}
   state: 0
   piece: {fileID: 0}
 --- !u!1001 &100100000

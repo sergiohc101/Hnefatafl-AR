@@ -8,26 +8,27 @@ public abstract class GameAction {
 
 	protected void setCrossOfSquares( SquareState stateValue, Vector2 pieceCoords )
 	{ // Checar casillas hostiles
+        Debug.Log(stateValue);
 		int coord_x = (int)pieceCoords.x;
 		int coord_y = (int)pieceCoords.y;
-		for ( int x = coord_x + 1; x < 10; x++ )
-			if ( Game.board [x,coord_y].piece )
-				Game.board [x,coord_y].state = stateValue;
-			else 
-				break;
+        for (int x = coord_x + 1; x < 10; x++)
+            if (!Game.board[coord_y, x].piece)
+                Game.board[coord_y, x].changeState(stateValue);
+            else
+                break;
 		for ( int x = coord_x - 1; x > 0; x-- )
-			if ( Game.board [x,coord_y].piece )
-				Game.board [x,coord_y].state = stateValue;
+			if ( !Game.board [coord_y, x].piece )
+                Game.board[coord_y, x].changeState(stateValue);
 			else 
 				break;
 		for ( int y = coord_y + 1; y < 11; y++ )
-			if ( Game.board [coord_x,y].piece )
-				Game.board [coord_x,y].state = stateValue;
+			if ( !Game.board [y, coord_x].piece )
+                Game.board[y, coord_x].changeState(stateValue);
 			else 
 				break;
 		for ( int y = coord_y - 1; y >= 0; y-- )
-			if ( Game.board [coord_x,y].piece )
-				Game.board [coord_x,y].state = stateValue;
+			if ( !Game.board [y, coord_x].piece )
+                Game.board[y, coord_x].changeState(stateValue);
 			else 
 				break;
 	}

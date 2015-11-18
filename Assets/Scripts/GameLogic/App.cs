@@ -18,9 +18,10 @@ public class App : MonoBehaviour {
 		game.update ();
 
 		//Codigo para probar las corrutinas:
-		if (Input.GetKeyDown("f")) {
-			StartCoroutine(Game.pieces[12].translate(new Vector2(9, 3)));
-			//StartCoroutine(Game.pieces[12].die());
-		}
+//        if (Input.GetKeyDown("f"))
+//        {
+//            StartCoroutine(Game.pieces[12].translate(new Vector2(9, 3)));
+//            //StartCoroutine(Game.pieces[12].die());
+//        }
 	}
 }

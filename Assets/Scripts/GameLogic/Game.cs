@@ -32,6 +32,10 @@ public abstract class Game {
 	{
 		// Game class get references of scene gameObjects
 
+        // Inactivate marker:
+        marker = GameObject.Find("Marker").GetComponent<Marker>();
+        marker.gameObject.SetActive(false);
+
 		// Load squares inside the board array:
 		Transform squares = GameObject.Find ("Squares").transform;
 		Transform row;
@@ -62,12 +66,12 @@ public abstract class Game {
 		board [0, 6].piece = pieceSet.GetChild (3).GetComponent<Piece>();
 		board [0, 7].piece = pieceSet.GetChild (4).GetComponent<Piece>();
 		board [1, 5].piece = pieceSet.GetChild (5).GetComponent<Piece>();
-		board [0, 3].piece.coord = new Vector2 (0, 3);
-		board [0, 4].piece.coord = new Vector2 (0, 4);
-		board [0, 5].piece.coord = new Vector2 (0, 5);
-		board [0, 6].piece.coord = new Vector2 (0, 6);
-		board [0, 7].piece.coord = new Vector2 (0, 7);
-		board [1, 5].piece.coord = new Vector2 (1, 5);
+		board [0, 3].piece.coord = new Vector2 (3, 0);
+		board [0, 4].piece.coord = new Vector2 (4, 0);
+		board [0, 5].piece.coord = new Vector2 (5, 0);
+		board [0, 6].piece.coord = new Vector2 (6, 0);
+		board [0, 7].piece.coord = new Vector2 (7, 0);
+		board [1, 5].piece.coord = new Vector2 (5, 1);
 
 		pieceSet = GameObject.Find ("PieceSetWest").transform;
 		board [3,0].piece = pieceSet.GetChild (0).GetComponent<Piece>();
@@ -76,12 +80,12 @@ public abstract class Game {
 		board [5,1].piece = pieceSet.GetChild (3).GetComponent<Piece>();
 		board [6,0].piece = pieceSet.GetChild (4).GetComponent<Piece>();
 		board [7,0].piece = pieceSet.GetChild (5).GetComponent<Piece>();
-		board [3,0].piece.coord = new Vector2 (3, 0);
-		board [4,0].piece.coord = new Vector2 (4, 0);
-		board [5,0].piece.coord = new Vector2 (5, 0);
-		board [5,1].piece.coord = new Vector2 (5, 1);
-		board [6,0].piece.coord = new Vector2 (6, 0);
-		board [7,0].piece.coord = new Vector2 (7, 0);
+		board [3,0].piece.coord = new Vector2 (0, 3);
+		board [4,0].piece.coord = new Vector2 (0, 4);
+		board [5,0].piece.coord = new Vector2 (0, 5);
+		board [5,1].piece.coord = new Vector2 (1, 5);
+		board [6,0].piece.coord = new Vector2 (0, 6);
+		board [7,0].piece.coord = new Vector2 (0, 7);
 
 		pieceSet = GameObject.Find ("PieceSetCenter").transform;
 		board [3,5].piece = pieceSet.GetChild (0).GetComponent<Piece>();
@@ -97,19 +101,19 @@ public abstract class Game {
 		board [6,5].piece = pieceSet.GetChild (10).GetComponent<Piece>();
 		board [6,6].piece = pieceSet.GetChild (11).GetComponent<Piece>();
 		board [7,5].piece = pieceSet.GetChild (12).GetComponent<Piece>();
-		board [3,5].piece.coord = new Vector2 (3, 5);
+		board [3,5].piece.coord = new Vector2 (5, 3);
 		board [4,4].piece.coord = new Vector2 (4, 4);
-		board [4,5].piece.coord = new Vector2 (4, 5);
-		board [4,6].piece.coord = new Vector2 (4, 6);
-		board [5,3].piece.coord = new Vector2 (5, 3);
-		board [5,4].piece.coord = new Vector2 (5, 4);
+		board [4,5].piece.coord = new Vector2 (5, 4);
+		board [4,6].piece.coord = new Vector2 (6, 4);
+		board [5,3].piece.coord = new Vector2 (3, 5);
+		board [5,4].piece.coord = new Vector2 (4, 5);
 		board [5,5].piece.coord = new Vector2 (5, 5);
-		board [5,6].piece.coord = new Vector2 (5, 6);
-		board [5,7].piece.coord = new Vector2 (5, 7);
-		board [6,4].piece.coord = new Vector2 (6, 4);
-		board [6,5].piece.coord = new Vector2 (6, 5);
+		board [5,6].piece.coord = new Vector2 (6, 5);
+		board [5,7].piece.coord = new Vector2 (7, 5);
+		board [6,4].piece.coord = new Vector2 (4, 6);
+		board [6,5].piece.coord = new Vector2 (5, 6);
 		board [6,6].piece.coord = new Vector2 (6, 6);
-		board [7,5].piece.coord = new Vector2 (7, 5);
+		board [7,5].piece.coord = new Vector2 (5, 7);
 
 		pieceSet = GameObject.Find ("PieceSetEast").transform;
 		board [3,10].piece = pieceSet.GetChild (0).GetComponent<Piece>();
@@ -118,12 +122,12 @@ public abstract class Game {
 		board [5,10].piece = pieceSet.GetChild (3).GetComponent<Piece>();
 		board [6,10].piece = pieceSet.GetChild (4).GetComponent<Piece>();
 		board [7,10].piece = pieceSet.GetChild (5).GetComponent<Piece>();
-		board [3,10].piece.coord = new Vector2 (3,10);
-		board [4,10].piece.coord = new Vector2 (4,10);
-		board [5, 9].piece.coord = new Vector2 (5, 9);
-		board [5,10].piece.coord = new Vector2 (5,10);
-		board [6,10].piece.coord = new Vector2 (6,10);
-		board [7,10].piece.coord = new Vector2 (7,10);
+		board [3,10].piece.coord = new Vector2 (10, 3);
+		board [4,10].piece.coord = new Vector2 (10, 4);
+		board [5, 9].piece.coord = new Vector2 ( 9, 5);
+		board [5,10].piece.coord = new Vector2 (10, 5);
+		board [6,10].piece.coord = new Vector2 (10, 6);
+		board [7,10].piece.coord = new Vector2 (10, 7);
 
 		pieceSet = GameObject.Find ("PieceSetSouth").transform;
 		board [9, 5].piece = pieceSet.GetChild (0).GetComponent<Piece>();
@@ -132,12 +136,12 @@ public abstract class Game {
 		board [10,5].piece = pieceSet.GetChild (3).GetComponent<Piece>();
 		board [10,6].piece = pieceSet.GetChild (4).GetComponent<Piece>();
 		board [10,7].piece = pieceSet.GetChild (5).GetComponent<Piece>();
-		board [9, 5].piece.coord = new Vector2 (9, 5);
-		board [10,3].piece.coord = new Vector2 (10,3);
-		board [10,4].piece.coord = new Vector2 (10,4);
-		board [10,5].piece.coord = new Vector2 (10,5);
-		board [10,6].piece.coord = new Vector2 (10,6);
-		board [10,7].piece.coord = new Vector2 (10,7);
+		board [9, 5].piece.coord = new Vector2 (5, 9);
+		board [10,3].piece.coord = new Vector2 (3, 10);
+		board [10,4].piece.coord = new Vector2 (4, 10);
+		board [10,5].piece.coord = new Vector2 (5, 10);
+		board [10,6].piece.coord = new Vector2 (6, 10);
+		board [10,7].piece.coord = new Vector2 (7, 10);
 	}
 
 	public void update()
@@ -189,7 +193,7 @@ public abstract class Game {
 		}
 		else
 		{		// Defense team
-			if ( currentPlayer.selectedPiece.transform.name == "pieceKing" )
+			if ( currentPlayer.selectedPiece.transform.tag == "King" )
 			{
 				Vector2 kingCoord = currentPlayer.selectedPiece.coord;
 				if ( (kingCoord.x == 0 || kingCoord.x == 10) &&
@@ -205,32 +209,32 @@ public abstract class Game {
 	{
 		int r = (int)currentPlayer.selectedPiece.coord.x;
 		int c = (int)currentPlayer.selectedPiece.coord.y;
-		if     ( c<10 && board[r,c+1].piece && board[r,c+1].piece.transform.name == "pieceKing" )
+		if     ( c<10 && board[r,c+1].piece && board[r,c+1].piece.transform.tag == "King" )
 		{
-			if ( (c==9  || (board[r,c+2].piece   && board[r,c+2].piece.transform.name == "pieceAttack")  ) && 
-			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.name == "pieceAttack")) &&
-			    ( r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.name == "pieceAttack")) )
+			if ( (c==9  || (board[r,c+2].piece   && board[r,c+2].piece.transform.tag == "Attacker")  ) && 
+			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.tag == "Attacker")) &&
+			    ( r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.tag == "Attacker")) )
 				return true;
 		}
-		else if( c>0  && board[r,c-1].piece && board[r,c-1].piece.transform.name == "pieceKing" )
+		else if( c>0  && board[r,c-1].piece && board[r,c-1].piece.transform.tag == "King" )
 		{
-			if ( (c==1  || (board[r,c-2].piece   && board[r,c-2].piece.transform.name == "pieceAttack")  ) && 
-			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.name == "pieceAttack")) &&
-			     (r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.name == "pieceAttack")) )
+			if ( (c==1  || (board[r,c-2].piece   && board[r,c-2].piece.transform.tag == "Attacker")  ) && 
+			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.tag == "Attacker")) &&
+			     (r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.tag == "Attacker")) )
 				return true;
 		}
-		else if( r<10 && board[r+1,c].piece && board[r+1,c].piece.transform.name == "pieceKing" )
+		else if( r<10 && board[r+1,c].piece && board[r+1,c].piece.transform.tag == "King" )
 		{
-			if ( (r==9  || (board[r+2,c].piece   && board[r+2,c].piece.transform.name == "pieceAttack")  ) && 
-			     (c==0  || (board[r+1,c-1].piece && board[r+1,c-1].piece.transform.name == "pieceAttack")) &&
-			     (c==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.name == "pieceAttack")) )
+			if ( (r==9  || (board[r+2,c].piece   && board[r+2,c].piece.transform.tag == "Attacker")  ) && 
+			     (c==0  || (board[r+1,c-1].piece && board[r+1,c-1].piece.transform.tag == "Attacker")) &&
+			     (c==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.tag == "Attacker")) )
 				return true;
 		}
-		else if( r>0  && board[r-1,c].piece && board[r-1,c].piece.transform.name == "pieceKing" )
+		else if( r>0  && board[r-1,c].piece && board[r-1,c].piece.transform.tag == "King" )
 		{
-			if ( (r==1  || (board[r-2,c].piece   && board[r-2,c].piece.transform.name == "pieceAttack")  ) && 
-			     (c==0  || (board[r-1,c-1].piece && board[r-1,c-1].piece.transform.name == "pieceAttack")) &&
-			     (c==10 || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.name == "pieceAttack")) )
+			if ( (r==1  || (board[r-2,c].piece   && board[r-2,c].piece.transform.tag == "Attacker")  ) && 
+			     (c==0  || (board[r-1,c-1].piece && board[r-1,c-1].piece.transform.tag == "Attacker")) &&
+			     (c==10 || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.tag == "Attacker")) )
 				return true;
 		}
 		return false;
@@ -243,19 +247,19 @@ public abstract class Game {
 		     (sqrSecond.coord.x == 5 && sqrSecond.coord.y == 5 ) )
 		{ 	
 			// sqrSecond is Hostil Zone
-			bool firstIsAttacker  = sqrFirst.piece.transform.name  == "pieceAttack";
+			bool firstIsAttacker  = sqrFirst.piece.transform.tag  == "Attacker";
 			if( firstIsAttacker  != currentPlayer.isAttackerPlayer && // first is Enemy
-			    sqrFirst.piece.transform.name != "pieceKing" )
+			    sqrFirst.piece.transform.tag != "King" )
 				sqrFirst.piece.die();
 		}
 		else if( sqrFirst.piece && sqrSecond.piece )
 		{
-			bool firstIsAttacker  = sqrFirst.piece.transform.name  == "pieceAttack";
-			bool secondIsAttacker = sqrSecond.piece.transform.name == "pieceAttack";
+			bool firstIsAttacker  = sqrFirst.piece.transform.tag  == "Attacker";
+			bool secondIsAttacker = sqrSecond.piece.transform.tag == "Attacker";
 			
 			if( firstIsAttacker  != currentPlayer.isAttackerPlayer &&  // first is Enemy
 			    secondIsAttacker == currentPlayer.isAttackerPlayer &&  // second is Teammate
-			    sqrFirst.piece.transform.name != "pieceKing" )
+			    sqrFirst.piece.transform.tag != "King" )
 				sqrFirst.piece.die();
 		}
 		

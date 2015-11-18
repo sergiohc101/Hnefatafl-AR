@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public struct Trace{
+public struct Trace {
 	public bool vertical;
 	public int index, start, end;
 	
