@@ -1,10 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-public struct Trace {
+public class Trace {
 	public bool vertical;
 	public int index, start, end;
-	
+
+	public Trace()
+	{
+		vertical = false;
+		index = -1;
+		start = end = 0;
+		Debug.Log ("TraceCon");
+	}
+
 	public void setTrace ( Vector2 vStart, Vector2 vDestination )
 	{
 		int start_x = (int)vStart.x;

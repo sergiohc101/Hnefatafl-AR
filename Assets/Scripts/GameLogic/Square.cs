@@ -5,11 +5,13 @@ public class Square : Selectable {
 
 	public SquareState state; 	// Current state of the Square object
 	public Piece piece;			// Piece object this Square has currently on top of it
+	private Color traceColor;
 
 	protected override void Awake()
 	{
 		state = SquareState.DEFAULT;
-        gameObject.SetActive(false);
+		traceColor = new Color (0.44314f, 0.52157f, 0.89804f);
+		//gameObject.SetActive(false);
 	}
 
 	// rollOver coroutine
@@ -23,22 +25,42 @@ public class Square : Selectable {
         switch (squareState)
         {
             case SquareState.VALID:
-                gameObject.SetActive(true);
-				state = state == SquareState.TRACED ? SquareState.VALID_TRACED : SquareState.VALID;
+				if ( state == SquareState.TRACED )
+				{
+					state = SquareState.VALID_TRACED;
+				}else 
+				{
+					state = SquareState.VALID;
+				}
+				renderer.material.color = Color.yellow;
                 break;
             case SquareState.DEFAULT:
-                gameObject.SetActive(false);
-				state = state == SquareState.VALID_TRACED ? SquareState.TRACED : SquareState.DEFAULT;
-				state = squareState;
+				if ( state == SquareState.VALID_TRACED )
+				{
+					state = SquareState.TRACED;
+					renderer.material.color = traceColor;
+				}
+				else
+				{
+					renderer.material.color = Color.white;
+					state = SquareState.DEFAULT;
+				}
                 break;
             case SquareState.POINTED:
-                gameObject.SetActive(true);
 				state = squareState;
                 break;
             case SquareState.TRACED:
-                gameObject.SetActive(true);
 				state = squareState;
+				renderer.material.color = traceColor;
                 break;
 		}
     }
+	public bool hasAnAttacker()
+	{
+		return (piece && piece.transform.tag == "Attacker") || (coord.x == 5f && coord.y == 5f );
+	}
+	public bool hasTheKing()
+	{
+		return (piece && piece.transform.tag == "King");
+	}
 }

@@ -25,6 +25,7 @@ public abstract class Game {
 	}
 
 	public void initialize () {
+		moveTrace = new Trace ();
 		loadBoard ();
 	}
 
@@ -170,15 +171,19 @@ public abstract class Game {
 	{
 		// Calculate and execute victorie or captures
 		if ( victorie() )
+		{
+			pieces[18].die ();
+			turnState = TurnState.END; // ANIMATION
 			return;
-		
+		}
+
 		// Calculate captures and execute piece coroutine die()
-		int r = (int)currentPlayer.selectedPiece.coord.x;
-		int c = (int)currentPlayer.selectedPiece.coord.y;
+		int r = (int)currentPlayer.selectedPiece.coord.y;
+		int c = (int)currentPlayer.selectedPiece.coord.x;
 		if( c < 9 )		checkCapture ( board [r,c+1], board [r,c+2] );
-		if( c > 2 )		checkCapture ( board [r,c-1], board [r,c-2] );
+		if( c > 1 )		checkCapture ( board [r,c-1], board [r,c-2] );
 		if( r < 9 )		checkCapture ( board [r+1,c], board [r+2,c] );
-		if( r > 2 )		checkCapture ( board [r-1,c], board [r-2,c] );
+		if( r > 1 )		checkCapture ( board [r-1,c], board [r-2,c] );
 		
 		
 		currentPlayer.selectedPiece = null;
@@ -207,34 +212,34 @@ public abstract class Game {
 	
 	bool checkAttackVictorie()
 	{
-		int r = (int)currentPlayer.selectedPiece.coord.x;
-		int c = (int)currentPlayer.selectedPiece.coord.y;
-		if     ( c<10 && board[r,c+1].piece && board[r,c+1].piece.transform.tag == "King" )
+		int r = (int)currentPlayer.selectedPiece.coord.y;
+		int c = (int)currentPlayer.selectedPiece.coord.x;
+		if     ( c<10 && board[r,c+1].hasTheKing() )
 		{
-			if ( (c==9  || (board[r,c+2].piece   && board[r,c+2].piece.transform.tag == "Attacker")  ) && 
-			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.tag == "Attacker")) &&
-			    ( r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.tag == "Attacker")) )
+			if ( (c==9  || board[r  ,c+2].hasAnAttacker() ) && 
+			     (r==0  || board[r-1,c+1].hasAnAttacker() ) &&
+			     (r==10 || board[r+1,c+1].hasAnAttacker() ) )
 				return true;
 		}
-		else if( c>0  && board[r,c-1].piece && board[r,c-1].piece.transform.tag == "King" )
+		else if( c>0  && board[r,c-1].hasTheKing() )
 		{
-			if ( (c==1  || (board[r,c-2].piece   && board[r,c-2].piece.transform.tag == "Attacker")  ) && 
-			     (r==0  || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.tag == "Attacker")) &&
-			     (r==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.tag == "Attacker")) )
+			if ( (c==1  || board[r,c-2  ].hasAnAttacker() ) && 
+			     (r==0  || board[r-1,c+1].hasAnAttacker() ) &&
+			     (r==10 || board[r+1,c+1].hasAnAttacker() ) )
 				return true;
 		}
-		else if( r<10 && board[r+1,c].piece && board[r+1,c].piece.transform.tag == "King" )
+		else if( r<10 && board[r+1,c].hasTheKing() )
 		{
-			if ( (r==9  || (board[r+2,c].piece   && board[r+2,c].piece.transform.tag == "Attacker")  ) && 
-			     (c==0  || (board[r+1,c-1].piece && board[r+1,c-1].piece.transform.tag == "Attacker")) &&
-			     (c==10 || (board[r+1,c+1].piece && board[r+1,c+1].piece.transform.tag == "Attacker")) )
+			if ( (r==9  || board[r+2,c  ].hasAnAttacker() ) && 
+			     (c==0  || board[r+1,c-1].hasAnAttacker() ) &&
+			     (c==10 || board[r+1,c+1].hasAnAttacker() ) )
 				return true;
 		}
-		else if( r>0  && board[r-1,c].piece && board[r-1,c].piece.transform.tag == "King" )
+		else if( r>0  && board[r-1,c].hasTheKing() )
 		{
-			if ( (r==1  || (board[r-2,c].piece   && board[r-2,c].piece.transform.tag == "Attacker")  ) && 
-			     (c==0  || (board[r-1,c-1].piece && board[r-1,c-1].piece.transform.tag == "Attacker")) &&
-			     (c==10 || (board[r-1,c+1].piece && board[r-1,c+1].piece.transform.tag == "Attacker")) )
+			if ( (r==1  || board[r-2,c  ].hasAnAttacker() ) && 
+			     (c==0  || board[r-1,c-1].hasAnAttacker() ) &&
+			     (c==10 || board[r-1,c+1].hasAnAttacker() ) )
 				return true;
 		}
 		return false;
@@ -242,26 +247,34 @@ public abstract class Game {
 	
 	void checkCapture ( Square sqrFirst, Square sqrSecond )
 	{
-		if ( (sqrSecond.coord.x == 0 || sqrSecond.coord.x == 10) &&
-		     (sqrSecond.coord.y == 0 || sqrSecond.coord.y == 10) ||
-		     (sqrSecond.coord.x == 5 && sqrSecond.coord.y == 5 ) )
-		{ 	
-			// sqrSecond is Hostil Zone
-			bool firstIsAttacker  = sqrFirst.piece.transform.tag  == "Attacker";
-			if( firstIsAttacker  != currentPlayer.isAttackerPlayer && // first is Enemy
-			    sqrFirst.piece.transform.tag != "King" )
-				sqrFirst.piece.die();
-		}
-		else if( sqrFirst.piece && sqrSecond.piece )
+		if (sqrFirst.piece)
 		{
-			bool firstIsAttacker  = sqrFirst.piece.transform.tag  == "Attacker";
-			bool secondIsAttacker = sqrSecond.piece.transform.tag == "Attacker";
-			
-			if( firstIsAttacker  != currentPlayer.isAttackerPlayer &&  // first is Enemy
-			    secondIsAttacker == currentPlayer.isAttackerPlayer &&  // second is Teammate
-			    sqrFirst.piece.transform.tag != "King" )
-				sqrFirst.piece.die();
+			if (sqrSecond.piece)
+			{
+				bool firstIsAttacker = sqrFirst.piece.transform.tag == "Attacker";
+				bool secondIsAttacker = sqrSecond.piece.transform.tag == "Attacker";
+
+				if (firstIsAttacker != currentPlayer.isAttackerPlayer  && // first is Enemy
+				    secondIsAttacker == currentPlayer.isAttackerPlayer && // second is Teammate
+				    sqrFirst.piece.transform.tag != "King")
+				{
+					sqrFirst.piece.die ();
+					sqrFirst.piece = null;
+				}
+
+			} else if ((sqrSecond.coord.x == 0 || sqrSecond.coord.x == 10)  &&
+				       (sqrSecond.coord.y == 0 || sqrSecond.coord.y == 10)  ||
+				       (sqrSecond.coord.x == 5 && sqrSecond.coord.y == 5 )) 
+			{ 
+				// sqrSecond is Hostil Zone
+				bool firstIsAttacker = sqrFirst.piece.transform.tag == "Attacker";
+				if (firstIsAttacker != currentPlayer.isAttackerPlayer && // first is Enemy
+				    sqrFirst.piece.transform.tag != "King")
+				{
+					sqrFirst.piece.die ();
+					sqrFirst.piece = null;
+				}
+			}
 		}
-		
 	}
 }

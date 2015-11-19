@@ -20,10 +20,11 @@ public class PieceSelection : GameAction
 
 	public override void execute ()
 	{
-		float h = Game.pieces[ pieceIndex ].transform.tag == "King" ? 52f : 15f ;
+		// Set Marker on selected piece
+		float h = Game.pieces[ pieceIndex ].transform.tag == "King" ? 24f : 13f ;
 		Game.marker.gameObject.SetActive ( true );
-		Game.marker.translate ( Game.pieces[ pieceIndex ].transform.position +
-		                       new Vector3( 0f,  h, 0f ) );
+		Game.marker.activate ( Game.pieces[ pieceIndex ].transform.position +
+		                        new Vector3( 0f,  h, 0f ) );
 		
 		
 		// Reset valid squares for the previous selection (if any)
@@ -45,10 +46,11 @@ public class PieceSelection : GameAction
 	{
 		if ( selectedPieceTag != "King" )
 		{
-			Game.board [ 0, 0].state = SquareState.DEFAULT;
-			Game.board [ 0,10].state = SquareState.DEFAULT;
-			Game.board [10, 0].state = SquareState.DEFAULT;
-			Game.board [10,10].state = SquareState.DEFAULT;
+			Game.board [ 0, 0].changeState ( SquareState.DEFAULT );
+			Game.board [ 0,10].changeState ( SquareState.DEFAULT );
+			Game.board [10, 0].changeState ( SquareState.DEFAULT );
+			Game.board [10,10].changeState ( SquareState.DEFAULT );
+			Game.board [ 5, 5].changeState ( SquareState.DEFAULT );
 		}
 	}
 }

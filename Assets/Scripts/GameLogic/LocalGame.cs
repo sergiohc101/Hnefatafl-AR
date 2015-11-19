@@ -19,13 +19,12 @@ public class LocalGame : Game {
 	}
 	public override void endTurn()
 	{
-		Debug.Log("endTurn");
-		// Execute couroutine of change of turn
-		// Assign TurnState
+			// Execute couroutine of change of turn
+
+			// Change player on turn
 		currentPlayer = currentPlayer.Equals(player2) ? player1 : player2;
+
+			// Set TurnState
 		turnState = TurnState.PIECE_SELECTION;
-		Debug.Log(currentPlayer);
-		Debug.Log(player1);
-		Debug.Log(player2);
 	}
 }

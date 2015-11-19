@@ -18,45 +18,42 @@ public class PieceMove : GameAction
 	
 	public override void execute ()
 	{
-		Game.marker.gameObject.SetActive(false);		
+		Game.marker.inactivate ();		
+
 		// Reset squares valids for move
 		setCrossOfSquares ( SquareState.DEFAULT, Game.currentPlayer.selectedPiece.coord );
-		
-		// Call piece's coroutine "translate"
-        Game.board[(int)squareIndex.y, (int)squareIndex.x].gameObject.SetActive(true);
-		Game.currentPlayer.selectedPiece.translate (squareIndex);
-		
-		// Set piece references and coord
-		Game.board [ (int)Game.currentPlayer.selectedPiece.coord.y,
-		 			 (int)Game.currentPlayer.selectedPiece.coord.x ].piece = null;
-		Game.board [ (int)squareIndex.y,
-		             (int)squareIndex.x ].piece = Game.currentPlayer.selectedPiece;
-		Game.currentPlayer.selectedPiece.coord = squareIndex;
-		
-		
+
 		// Reset traced squares (if any)
 		if ( Game.moveTrace.index != -1 )
 			setLineOfSquares ( SquareState.DEFAULT );
-		
-		// Set trace of the new move
+
+		// Save and Show the new trace of squares
 		Game.moveTrace.setTrace ( Game.currentPlayer.selectedPiece.coord, squareIndex );
-		
-		// Show the new trace of squares
 		setLineOfSquares ( SquareState.TRACED );
-		
+
+		// Set piece references and coord
+		Game.board [ (int)Game.currentPlayer.selectedPiece.coord.y,
+		             (int)Game.currentPlayer.selectedPiece.coord.x ].piece = null;
+		Game.board [ (int)squareIndex.y,
+		             (int)squareIndex.x ].piece = Game.currentPlayer.selectedPiece;
+		Game.currentPlayer.selectedPiece.coord = squareIndex;
+
+
 		// Assing TurnState
 		Game.turnState = TurnState.ANIMATION;
+
+		// Call piece's coroutine "translate"
+		Game.board[(int)squareIndex.y, (int)squareIndex.x].gameObject.SetActive(true);
+		Game.currentPlayer.selectedPiece.translate (squareIndex);
 	}
 	
 	private void setLineOfSquares ( SquareState stateValue )
 	{
 		if ( Game.moveTrace.vertical )
-			for ( int i = Game.moveTrace.start; i <= Game.moveTrace.end; i++ )
-				Game.board [ Game.moveTrace.start,
-							 Game.moveTrace.index ].state = stateValue; 
+			for ( int x = Game.moveTrace.start; x <= Game.moveTrace.end; x++ )
+				Game.board [ Game.moveTrace.index, x ].changeState ( stateValue ); 
 		else
-			for ( int i = Game.moveTrace.start; i <= Game.moveTrace.end; i++ )
-				Game.board [ Game.moveTrace.index,
-							 Game.moveTrace.start ].state = stateValue;
+			for ( int y = Game.moveTrace.start; y <= Game.moveTrace.end; y++ )
+				Game.board [ y, Game.moveTrace.index ].changeState ( stateValue );
 	}
 }

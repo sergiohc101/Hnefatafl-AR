@@ -21,23 +21,29 @@ public class Piece : Selectable {
     {
         Transform targetSquare = Game.board[(int)pieceDest.y, (int)pieceDest.x].transform;
         float progress = 0;
+		float duration = 1f;
         float startTime = Time.time;
 
         while (progress < 1)
         {
             transform.position = Vector3.Lerp(transform.position, targetSquare.position, progress);
-            progress = (Time.time - startTime) / 3f;
+            progress = (Time.time - startTime) / duration;
             yield return null;
         }
 
 		//Debug.Log("Pieza trasladada!");
         transform.position = targetSquare.position;
         Game.turnState = TurnState.APPLYNG_RULES;
-		Game.board[(int)pieceDest.y, (int)pieceDest.x].gameObject.SetActive(false);
+		//Game.board[(int)pieceDest.y, (int)pieceDest.x].gameObject.SetActive(false);
     }
 
+	public void die ()
+	{
+		StartCoroutine( dieCoroutine() );
+	}
+
 	// die coroutine
-	public IEnumerator die ()
+	public IEnumerator dieCoroutine ()
 	{
 		Vector3 dest = transform.localPosition;
 		dest.y = -0.15f;
@@ -46,5 +52,6 @@ public class Piece : Selectable {
 			yield return null;
 		}
 		//Debug.Log("Pieza capturada!");
+		gameObject.SetActive (false);
 	}
 }
