@@ -9,6 +9,7 @@ public abstract class Game {
 	public static Marker marker;
 	
 	public static Trace moveTrace;
+	public static AudioManager audio;
 
 	public static Player currentPlayer;
 	protected int p1Score, p2Score;
@@ -26,6 +27,7 @@ public abstract class Game {
 
 	public void initialize () {
 		moveTrace = new Trace ();
+		audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		loadBoard ();
 	}
 
@@ -162,6 +164,7 @@ public abstract class Game {
 			break;
 			
 		case TurnState.END:
+			Game.audio.playEnd ();
 			endTurn ();
 			break;
 		}
@@ -173,11 +176,12 @@ public abstract class Game {
 		if ( victorie() )
 		{
 			pieces[18].die ();
-			turnState = TurnState.END; // ANIMATION
+			turnState = TurnState.ANIMATION; // ANIMATION
 			return;
 		}
 
 		// Calculate captures and execute piece coroutine die()
+		turnState = TurnState.END;
 		int r = (int)currentPlayer.selectedPiece.coord.y;
 		int c = (int)currentPlayer.selectedPiece.coord.x;
 		if( c < 9 )		checkCapture ( board [r,c+1], board [r,c+2] );
@@ -187,7 +191,6 @@ public abstract class Game {
 		
 		
 		currentPlayer.selectedPiece = null;
-		turnState = TurnState.END; // ANIMATION
 	}
 
 	bool victorie()
@@ -258,6 +261,7 @@ public abstract class Game {
 				    secondIsAttacker == currentPlayer.isAttackerPlayer && // second is Teammate
 				    sqrFirst.piece.transform.tag != "King")
 				{
+					turnState = TurnState.ANIMATION;
 					sqrFirst.piece.die ();
 					sqrFirst.piece = null;
 				}
@@ -271,6 +275,7 @@ public abstract class Game {
 				if (firstIsAttacker != currentPlayer.isAttackerPlayer && // first is Enemy
 				    sqrFirst.piece.transform.tag != "King")
 				{
+					turnState = TurnState.ANIMATION;
 					sqrFirst.piece.die ();
 					sqrFirst.piece = null;
 				}

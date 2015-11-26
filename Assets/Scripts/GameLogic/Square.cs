@@ -14,12 +14,6 @@ public class Square : Selectable {
 		//gameObject.SetActive(false);
 	}
 
-	// rollOver coroutine
-	public override IEnumerator rollOver ()
-	{
-		yield return null;
-	}
-
     public void changeState(SquareState squareState)
     {
         switch (squareState)
@@ -62,5 +56,18 @@ public class Square : Selectable {
 	public bool hasTheKing()
 	{
 		return (piece && piece.transform.tag == "King");
+	}
+	
+	public override void rollOver( bool bValue )
+	{
+		if (bValue)
+		{
+			coroutine = rollOverCoroutine ();
+			StartCoroutine ( coroutine );
+		}else
+		{
+			StopCoroutine ( coroutine );
+			renderer.material.color = Color.yellow;
+		}
 	}
 }

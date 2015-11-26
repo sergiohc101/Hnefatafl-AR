@@ -5,15 +5,11 @@ public class Piece : Selectable {
 
 	public int index;	// Index of the piece within the pieces array
 
-	// rollOver coroutine
-	public override IEnumerator rollOver ()
-	{
-		yield return null;
-	}
 
 	// translate coroutine
 	public void translate (Vector2 pieceDest)
 	{
+		Game.audio.playMove ();
         StartCoroutine(translateCoroutine(pieceDest));
 	}
 
@@ -39,6 +35,7 @@ public class Piece : Selectable {
 
 	public void die ()
 	{
+		Game.audio.playDie ();
 		StartCoroutine( dieCoroutine() );
 	}
 
@@ -53,5 +50,19 @@ public class Piece : Selectable {
 		}
 		//Debug.Log("Pieza capturada!");
 		gameObject.SetActive (false);
+		Game.turnState = TurnState.END;
+	}
+
+	public override void rollOver( bool bValue )
+	{
+		if (bValue)
+		{
+			coroutine = rollOverCoroutine ();
+			StartCoroutine ( coroutine );
+		}else
+		{
+			StopCoroutine ( coroutine );
+			renderer.material.color = Color.white;
+		}
 	}
 }

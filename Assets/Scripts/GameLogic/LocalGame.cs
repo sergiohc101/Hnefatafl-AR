@@ -16,6 +16,8 @@ public class LocalGame : Game {
 	{
 		if ( gameAction.validate () )
 			gameAction.execute ();
+		else
+			Game.audio.playError ();
 	}
 	public override void endTurn()
 	{

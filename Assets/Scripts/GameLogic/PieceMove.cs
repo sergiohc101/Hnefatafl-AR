@@ -43,7 +43,6 @@ public class PieceMove : GameAction
 		Game.turnState = TurnState.ANIMATION;
 
 		// Call piece's coroutine "translate"
-		Game.board[(int)squareIndex.y, (int)squareIndex.x].gameObject.SetActive(true);
 		Game.currentPlayer.selectedPiece.translate (squareIndex);
 	}
 	

@@ -20,6 +20,8 @@ public class PieceSelection : GameAction
 
 	public override void execute ()
 	{
+		Game.audio.playSelect ();
+
 		// Set Marker on selected piece
 		float h = Game.pieces[ pieceIndex ].transform.tag == "King" ? 24f : 13f ;
 		Game.marker.gameObject.SetActive ( true );
