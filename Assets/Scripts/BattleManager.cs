@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BattleManager : MonoBehaviour {
 
+	public BTManager manager;
 	private string battle;
 
 	// Use this for initialization
@@ -27,7 +28,8 @@ public class BattleManager : MonoBehaviour {
 		if (battle == "bb") {
 			Application.LoadLevel("NewPDCTest");
 		} else if (battle == "fb") {
-			Application.LoadLevel("PI");
+			if(manager.adapter.initBT()) 
+				Application.LoadLevel("PI");
 		}
 	}
 }
