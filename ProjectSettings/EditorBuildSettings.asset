@@ -9,7 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/HnefataflMM.unity
   - enabled: 1
     path: Assets/Scenes/PI.unity
-  - enabled: 0
-    path: Assets/Scenes/PDC.unity
   - enabled: 1
     path: Assets/Scenes/NewPDCTest.unity

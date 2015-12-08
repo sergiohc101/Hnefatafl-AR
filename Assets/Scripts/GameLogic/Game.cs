@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public abstract class Game {
@@ -7,12 +8,12 @@ public abstract class Game {
 	public static Piece[] pieces;
 	public static Square[,] board;
 	public static Marker marker;
-	
 	public static Trace moveTrace;
 	public static AudioManager audio;
-
 	public static Player currentPlayer;
-	protected int p1Score, p2Score;
+	public static int p1Score, p2Score;
+	public static Text p1ScoreText, p2ScoreText;
+	public static TurnIndicator attackerTurnIndicator, defenderTurnIndicator;
 	
 	public abstract void performAction( GameAction gameAction );
 	public abstract void endTurn();
@@ -22,12 +23,16 @@ public abstract class Game {
 		turnState = TurnState.PIECE_SELECTION;
 		pieces = new Piece[37];
 		board = new Square[11, 11];
-		p1Score = p2Score = 0;
 	}
 
 	public void initialize () {
 		moveTrace = new Trace ();
 		audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+		p1Score = p2Score = 0;
+		p1ScoreText = GameObject.Find("P1ScoreText").GetComponent<Text>();
+		p2ScoreText = GameObject.Find("P2ScoreText").GetComponent<Text>();
+		defenderTurnIndicator = GameObject.Find("DefenderIndicator").GetComponent<TurnIndicator>();
+		attackerTurnIndicator = GameObject.Find("AttackerIndicator").GetComponent<TurnIndicator>();
 		loadBoard ();
 	}
 

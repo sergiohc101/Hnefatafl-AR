@@ -21,12 +21,17 @@ public class LocalGame : Game {
 	}
 	public override void endTurn()
 	{
-			// Execute couroutine of change of turn
-
-			// Change player on turn
-		currentPlayer = currentPlayer.Equals(player2) ? player1 : player2;
-
-			// Set TurnState
+		// Set TurnState
 		turnState = TurnState.PIECE_SELECTION;
+
+		// Change player on turn and show turn change animation
+		if (currentPlayer.Equals(player2)) {
+			currentPlayer = player1;
+			attackerTurnIndicator.show();
+		}
+		else {
+			currentPlayer = player2;
+			defenderTurnIndicator.show();
+		}
 	}
 }

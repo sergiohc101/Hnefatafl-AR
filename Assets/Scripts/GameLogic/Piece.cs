@@ -26,16 +26,18 @@ public class Piece : Selectable {
             progress = (Time.time - startTime) / duration;
             yield return null;
         }
-
-		//Debug.Log("Pieza trasladada!");
+	
         transform.position = targetSquare.position;
         Game.turnState = TurnState.APPLYNG_RULES;
-		//Game.board[(int)pieceDest.y, (int)pieceDest.x].gameObject.SetActive(false);
     }
 
 	public void die ()
 	{
 		Game.audio.playDie ();
+		if (transform.tag == "Attacker")
+			Game.p2ScoreText.text = (++(Game.p2Score)).ToString();
+		else
+			Game.p1ScoreText.text = (++(Game.p1Score)).ToString();
 		StartCoroutine( dieCoroutine() );
 	}
 
@@ -48,7 +50,6 @@ public class Piece : Selectable {
 			transform.localPosition = Vector3.Lerp(transform.localPosition, dest, 0.5f * Time.deltaTime);
 			yield return null;
 		}
-		//Debug.Log("Pieza capturada!");
 		gameObject.SetActive (false);
 		Game.turnState = TurnState.END;
 	}
