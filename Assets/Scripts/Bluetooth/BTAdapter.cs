@@ -1,82 +1,107 @@
 ﻿using UnityEngine;
 
 
-public class BTAdapter {
+public static class BTAdapter {
 
-	#if UNITY_ANDROID
-	AndroidJavaClass androidClass;
+	static AndroidJavaClass androidClass; //= new AndroidJavaClass("com.BonzoLabs.HnefataflAR.BTPlugin");
+	static AndroidJavaObject androidObj;
 
-	
+	/*
 	public BTAdapter() {
 		AndroidJNI.AttachCurrentThread();
 		androidClass = new AndroidJavaClass("com.BonzoLabs.HnefataflAR.BTPlugin");
 	}
+	*/
 
-	public bool initBT(){
+	#if UNITY_ANDROID
+
+	public static void initAdapter(){
+		AndroidJNI.AttachCurrentThread();
+		androidClass = new AndroidJavaClass("com.BonzoLabs.HnefataflAR.BTPlugin");
+		//androidObj = androidClass.GetStatic<AndroidJavaObject>("mContext");
+	}
+
+	public static bool initBT(){
 		return androidClass.CallStatic<bool>("initBT");
 	}
 
-	public void turnOnBT(){
+	public static bool isBTEnabled(){
+		return androidClass.CallStatic<bool>("isBTOn");
+	}
+
+	public static void turnOnBT(){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			activity.Call("setBTOn");
 		}
 	}
 
-	public void sendMessage(string message){
+	public static void turnOnBT2(){
+		AndroidJNI.AttachCurrentThread();
+		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
+			activity.Call("setBTOn");
+		}
+	}
+
+	public static void turnOnBT3(){
+		AndroidJNI.AttachCurrentThread();
+		androidObj.Call("setBTOn");
+	}
+
+	public static void sendMessage(string message){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			object[] args = new object[] {message};
 			activity.Call("sendMessage", args);
 		}
 	}
 
-	public void searchAndConnectDevice(string device){
+	public static void searchAndConnectDevice(string device){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			object[] args = new object[] {device};
 			activity.Call("searchAndConnectDevice", args);
 		}
 	}
 
-	public void startServer(){
+	public  static void startServer(){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			activity.Call("startServer");
 		}
 	}
 
-	public void stopConnection(){
+	public static void stopConnection(){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			activity.Call("stopConnection");
 		}
 	}
 
-	public void getPairedDevices(){
+	public static void getPairedDevices(){
 		androidClass.CallStatic("getPairedDev");
 	}
 
-	public void discoverBTDev(){
+	public static void discoverBTDev(){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			activity.Call("discoverDevices");
 		}
 	}
 
-	public void enableDiscoverability(){
+	public static void enableDiscoverability(){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			activity.Call("enableBeDiscovered");
 		}
 	}
 
-	public void enableDiscoverability(int seconds){
+	public static void enableDiscoverability(int seconds){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			object[] args = new object[] {seconds};
 			activity.Call("enableBeDiscovered",args);
 		}
 	}
 
-	public string[] returnPairedDevices(){
+	public static string[] returnPairedDevices(){
 		return androidClass.CallStatic<string[]>("returnPairedDev");
 	}
 
-	public string[] getDiscoveredDevices(){
-		return androidClass.CallStatic<string[]>("returnPairedDev");
+	public static string[] getDiscoveredDevices(){
+		return androidClass.CallStatic<string[]>("returnDiscoveredDev");
 	}
 		
 	#endif
