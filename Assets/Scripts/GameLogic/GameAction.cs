@@ -5,6 +5,7 @@ public abstract class GameAction {
 	
 	public abstract bool validate();
 	public abstract void execute();
+	public abstract GameMessage getMessage();
 
 	protected void setCrossOfSquares( SquareState stateValue, Vector2 pieceCoords )
 	{ // Checar casillas hostiles

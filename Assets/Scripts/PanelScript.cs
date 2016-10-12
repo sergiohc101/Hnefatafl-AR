@@ -15,14 +15,14 @@ public class PanelScript : MonoBehaviour {
 	[Tooltip("TabPanel 4")]
 	public Transform tabPanel4;
 
-	private short activePanel;
+	private int activePanel;
 	private Transform[] panels;
 
 	void Start () {
 		if(!tabPanel1 || !tabPanel2 || !tabPanel3 || !tabPanel4)
 			Debug.LogWarning("Select all four Tab Panels! ");
 		else{
-			activePanel = 1;
+			activePanel = -1;
 			panels = new Transform[4];
 
 			panels[0] = tabPanel1;
@@ -33,10 +33,18 @@ public class PanelScript : MonoBehaviour {
 		ShowTab(1);
 	}
 
+	void ResetActiveTab(int tabIndex)
+	{
+		if(tabIndex == activePanel){							//ACTIVE TAB was clicked
+			panels[tabIndex-1].GetChild(0).SendMessage("ResetPage");	
+			//Debug.Log ("SAME PANEL SELECTED: " + tabIndex);
+			return;
+		}
+		else ShowTab(tabIndex);
+	}
+
 	void ShowTab(int tabIndex)
 	{
-		Debug.Log ("TAB = " + tabIndex);
-
 		Transform ScrollRectContainer;
 
 		if(tabIndex == -1){	 										//LAST TAB								
@@ -61,6 +69,9 @@ public class PanelScript : MonoBehaviour {
 		for (int j= 0; j < ScrollRectContainer.childCount; j++)
 			ScrollRectContainer.GetChild(j).GetComponent<Image>().enabled = true;//Images
 		panels[tabIndex-1].GetChild(1).gameObject.SetActive(true);				//PageSelector
+
+		activePanel = tabIndex;
+		//Debug.Log ("Active Panel = " + activePanel);
 	}
 	
 

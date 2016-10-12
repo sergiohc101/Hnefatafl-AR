@@ -26,17 +26,17 @@ public class Square : Selectable {
 				{
 					state = SquareState.VALID;
 				}
-				renderer.material.color = Color.yellow;
+				GetComponent<Renderer>().material.color = Color.yellow;
                 break;
             case SquareState.DEFAULT:
 				if ( state == SquareState.VALID_TRACED )
 				{
 					state = SquareState.TRACED;
-					renderer.material.color = traceColor;
+					GetComponent<Renderer>().material.color = traceColor;
 				}
 				else
 				{
-					renderer.material.color = Color.white;
+					GetComponent<Renderer>().material.color = Color.white;
 					state = SquareState.DEFAULT;
 				}
                 break;
@@ -45,7 +45,7 @@ public class Square : Selectable {
                 break;
             case SquareState.TRACED:
 				state = squareState;
-				renderer.material.color = traceColor;
+				GetComponent<Renderer>().material.color = traceColor;
                 break;
 		}
     }
@@ -67,7 +67,7 @@ public class Square : Selectable {
 		}else
 		{
 			StopCoroutine ( coroutine );
-			renderer.material.color = Color.yellow;
+			GetComponent<Renderer>().material.color = Color.yellow;
 		}
 	}
 }

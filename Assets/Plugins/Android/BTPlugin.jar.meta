@@ -1,4 +1,23 @@
 fileFormatVersion: 2
-guid: 7c07d8ffb653d4b73a5557c63763efbc
-DefaultImporter:
+guid: 2c296b777f7b84065a79351c59852079
+timeCreated: 1475875773
+licenseType: Free
+PluginImporter:
+  serializedVersion: 1
+  iconMap: {}
+  executionOrder: {}
+  isPreloaded: 0
+  platformData:
+    Android:
+      enabled: 1
+      settings: {}
+    Any:
+      enabled: 0
+      settings: {}
+    Editor:
+      enabled: 0
+      settings:
+        DefaultValueInitialized: true
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

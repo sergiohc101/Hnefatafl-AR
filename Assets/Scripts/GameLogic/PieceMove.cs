@@ -45,7 +45,16 @@ public class PieceMove : GameAction
 		// Call piece's coroutine "translate"
 		Game.currentPlayer.selectedPiece.translate (squareIndex);
 	}
-	
+
+	public override GameMessage getMessage()
+	{	
+		GameMessage message = new GameMessage ();
+		message.bPieceSelectionMessage = false;
+		message.iIndex1 = (int)squareIndex.x;
+		message.iIndex2 = (int)squareIndex.y;
+		return message;
+	}
+
 	private void setLineOfSquares ( SquareState stateValue )
 	{
 		if ( Game.moveTrace.vertical )

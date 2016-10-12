@@ -34,10 +34,12 @@ public class Piece : Selectable {
 	public void die ()
 	{
 		Game.audio.playDie ();
+		/* TODO
 		if (transform.tag == "Attacker")
 			Game.p2ScoreText.text = (++(Game.p2Score)).ToString();
 		else
 			Game.p1ScoreText.text = (++(Game.p1Score)).ToString();
+		*/
 		StartCoroutine( dieCoroutine() );
 	}
 
@@ -63,7 +65,7 @@ public class Piece : Selectable {
 		}else
 		{
 			StopCoroutine ( coroutine );
-			renderer.material.color = Color.white;
+			GetComponent<Renderer>().material.color = Color.white;
 		}
 	}
 }

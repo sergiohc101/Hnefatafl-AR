@@ -74,7 +74,7 @@ public class BattleManager : MonoBehaviour {
 
 	public void onClickLoadBattle(){
 		if (battle == "bb") {
-			Application.LoadLevel("PI");
+			Application.LoadLevel("PDC");
 		} else if (battle == "fb") {
 			if(BManager.isBTEnabled()){
 				BManager.StartServer();

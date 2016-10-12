@@ -7,6 +7,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(Mask))]
 [RequireComponent(typeof(ScrollRect))]
+
 public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
 
 	[Tooltip("MainPanel")]
@@ -22,10 +23,10 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     public int fastSwipeThresholdDistance = 100;
     [Tooltip("How fast will page lerp to target position")]
     public float decelerationRate = 10f;
-    [Tooltip("Button to go to the previous page (optional)")]
-    public GameObject prevButton;
-    [Tooltip("Button to go to the next page (optional)")]
-    public GameObject nextButton;
+    //[Tooltip("Button to go to the previous page (optional)")]
+    //public GameObject prevButton;
+    //[Tooltip("Button to go to the next page (optional)")]
+    //public GameObject nextButton;
     [Tooltip("Sprite for unselected page (optional)")]
     public Sprite unselectedPage;
     [Tooltip("Sprite for selected page (optional)")]
@@ -43,7 +44,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     private bool _horizontal;
     
     // number of pages in container
-    private int _pageCount;
+    public int _pageCount;
     private int _currentPage;
 
     // whether lerping is in progress and target lerp position
@@ -80,12 +81,14 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         InitPageSelection();
         SetPageSelection(startingPage);
 
-        // prev and next buttons
+        
+		/*// prev and next buttons
         if (nextButton)
             nextButton.GetComponent<Button>().onClick.AddListener(() => { NextScreen(); });
 
         if (prevButton)
             prevButton.GetComponent<Button>().onClick.AddListener(() => { PreviousScreen(); });
+		*/
 	}
 
     //------------------------------------------------------------------------
@@ -115,6 +118,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 	private void ResetPage() {
 		SetPage(startingPage);
 		SetPageSelection(startingPage);
+		//LerpToPage(startingPage);
 	}
 	
 	//------------------------------------------------------------------------
@@ -127,23 +131,23 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 		if (_horizontal) {
             // screen width in pixels of scrollrect window
             width = (int)_scrollRectRect.rect.width;
-            Debug.Log("width= " + width);
+            // Debug.Log("width= " + width);
             // center position of all pages
             offsetX = width / 2;
             // total width
             containerWidth = width * _pageCount;
             // limit fast swipe length - beyond this length it is fast swipe no more
             _fastSwipeThresholdMaxLimit = width;
-        } else 
-			Debug.LogWarning("Check Orientation Var...");
+        } 
+		// else Debug.LogWarning("Check Orientation Var...");
 
         // set width of container
         Vector2 newSize = new Vector2(containerWidth, containerHeight);
-        Debug.Log("V= " + newSize.ToString());
+        //Debug.Log("V= " + newSize.ToString());
 
 		_container.sizeDelta = newSize;
         Vector2 newPosition = new Vector2(containerWidth / 2, containerHeight / 2);
-		Debug.Log("NPosition= " + newPosition.ToString());
+		// Debug.Log("NPosition= " + newPosition.ToString());
 		//_container.anchoredPosition = new Vector2(0f,0f);
 		_container.anchoredPosition = newPosition;
 
@@ -240,18 +244,18 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     private int GetNearestPage() {
         // based on distance from current position, find nearest page
         Vector2 currentPosition = _container.anchoredPosition;
-		Debug.Log ("FinalPos= " + currentPosition.ToString());
-		Debug.Log("MAX " + _container.offsetMax.x);
-		Debug.Log("min " + _container.offsetMin.x);
+		//Debug.Log ("FinalPos= " + currentPosition.ToString());
+		//Debug.Log("MAX " + _container.offsetMax.x);
+		//Debug.Log("min " + _container.offsetMin.x);
 		if(_container.offsetMin.x > -250 && index!=1){
 			panel.SendMessage("ShowTab",index-1);  
-			Debug.Log("Get BACK in da haus");
+			//Debug.Log("Get BACK in da haus");
 		}
 		if(_container.offsetMax.x < 250)  {
 			if(index == 4)	panel.SendMessage("ShowTab",-1);
 			else{
 			panel.SendMessage("ShowTab",index+1); 
-			Debug.Log("Next Page ->");
+			//Debug.Log("Next Page ->");
 			}
 		}
         float distance = float.MaxValue;
@@ -278,29 +282,29 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
 
     //------------------------------------------------------------------------
     public void OnEndDrag(PointerEventData aEventData) {
-		Debug.Log ("----- Dragged Ended! -----------------");
+		//Debug.Log ("----- Dragged Ended! -----------------");
         // how much was container's content dragged
         float difference;
 
 		difference = _startPosition.x - _container.anchoredPosition.x;
 
         // test for fast swipe - swipe that moves only +/-1 item
-
+		/*
 		Debug.Log("TDIF= " + (Time.unscaledTime - _timeStamp));
 		Debug.Log("    dif = " + difference);
 		Debug.Log("STT= " + fastSwipeThresholdTime + " | " +(Time.unscaledTime - _timeStamp < fastSwipeThresholdTime));
 		Debug.Log("Std= " + fastSwipeThresholdDistance + " | " + (Mathf.Abs(difference) > fastSwipeThresholdDistance));
 		Debug.Log("SMl= " + _fastSwipeThresholdMaxLimit + " | " + (Mathf.Abs(difference) < _fastSwipeThresholdMaxLimit));
-
+		*/
 		if (Time.unscaledTime - _timeStamp < fastSwipeThresholdTime &&
             Mathf.Abs(difference) > fastSwipeThresholdDistance &&
             Mathf.Abs(difference) < _fastSwipeThresholdMaxLimit) {
-			Debug.Log("Curr "+_currentPage);
+			//Debug.Log("Curr "+_currentPage);
             if (difference > 0) {
-				Debug.Log(" *** R ***");
+				//Debug.Log(" *** R ***");
                 NextScreen();
             } else {
-				Debug.Log(" *** L ***");
+				//Debug.Log(" *** L ***");
                 PreviousScreen();
             }
         } else {
@@ -320,7 +324,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             _timeStamp = Time.unscaledTime;
 			// save current position of cointainer
 			_startPosition = _container.anchoredPosition;
-			Debug.Log ("StartPos= " +_startPosition.ToString());
+			//Debug.Log ("StartPos= " +_startPosition.ToString());
         } else {
             if (_showPageSelection) {
                 SetPageSelection(GetNearestPage());

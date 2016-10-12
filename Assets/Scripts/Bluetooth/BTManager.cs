@@ -2,20 +2,36 @@
 using System.Collections;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Collections.Generic;
 
 public class BTManager : MonoBehaviour {
 
 	//public BTAdapter adapter;
+	public bool DEBUG;
 	public int algo;
-	public string messagee;
+	private Stack<string> messagee = new Stack<string>();
+	private Queue<GameMessage> GameMessages = new Queue<GameMessage>();
+	//public string messagee;
 	public string count;
-	public string connectedTo;
+	private string connectedTo;
 
 	private string[] devices = {"hola","mundo","hnefatafl"};
 	public enum STATE {IDLE, DISCOVERING, CONNECTED};
 	public STATE BTState;
+	public static bool isServer = false;
+	//Singleton
+		//private static BTManager _instance;
+		//private BTManager(){}
+		//public static BTManager Instance { get { return _instance;}}
+
 
 	void Awake(){
+		/*
+		if(_instance != null && _instance != this)
+			Destroy(this.gameObject);
+		else
+			_instance = this;
+		*/
 		DontDestroyOnLoad(transform.gameObject);
 		//adapter = new BTAdapter();
 		algo = 666;
@@ -43,8 +59,8 @@ public class BTManager : MonoBehaviour {
 		BTAdapter.initAdapter();
 		BTAdapter.initBT();
 		BTAdapter.turnOnBT();
-		messagee = "BT On";
-		setDevil();
+		messagee.Push("BT On"); // = "BT On";
+		//setDevil();
 	}
 
 	public void turnBTON()
@@ -52,6 +68,7 @@ public class BTManager : MonoBehaviour {
 		algo = 333;
 		BTAdapter.turnOnBT();
 		algo = 777;
+		DEBUG = !DEBUG;
 	}
 
 	public bool isBTEnabled()
@@ -62,6 +79,7 @@ public class BTManager : MonoBehaviour {
 	public void StartServer()
 	{
 		BTAdapter.startServer();
+		isServer = true;
 	}
 
 	public void enableDiscoverability()
@@ -87,47 +105,75 @@ public class BTManager : MonoBehaviour {
 
 	public void connectedFromDevice(string name)
 	{
-		messagee = "Connected to <"+name+">";
+		messagee.Push("Connected to <"+name+">");
 		this.connectedTo = name;
 	}
 
 	public void connectToDevice(string name)
 	{
 		this.connectedTo = name;
-		messagee = "*"+ name +" >_<";
+		messagee.Push("*"+ name +" >_<");
 		algo = 555;
 		BTAdapter.searchAndConnectDevice(name);
 		BTAdapter.sendMessage("Connected to <" + name + ">");		
 		BTState = STATE.CONNECTED;
 	}
 
+
 	public void sendBTMessage(string message)
 	{
-		messagee = "Message send to Device";
+		messagee.Push(" >>" +  message);
 		BTAdapter.sendMessage(message);
 	}
 
-	void getMessageFromAPI(string msg)
+	public void sendGameMessage(GameMessage msg)
 	{
-		messagee = msg;
+		BTAdapter.sendBytes(ObjectToByteArray(msg));
+	}
+
+	public void getMessageFromAPI(string msg)
+	{
+		messagee.Push(msg);
+	}
+
+	public void getBytesFromAPI(string msg)
+	{	
+		GameMessages.Enqueue(ByteArrayToObject(BTAdapter.getBytesfromAPI()));
+
+		//byte[] b = BTAdapter.getBytesfromAPI();
+		//messagee.Push("*"+ ByteArrayToString(b) +"*");
+
+		messagee.Push(msg);
+	}
+
+	public GameMessage getGameMessage()
+	{
+		if(GameMessages.Count > 0) return GameMessages.Dequeue();
+		else return null;
 	}
 
 
 	void OnGUI(){
-		GUI.color = Color.white;
-		GUILayout.BeginArea (new Rect (25, 100, 200, 200), "Android Bluetooth Debug", "Window");
-		GUILayout.BeginVertical ();
-		GUILayout.TextArea (algo.ToString(), GUILayout.Height (30));
-		GUILayout.TextArea (messagee, GUILayout.Height (50));
-		GUILayout.TextArea (count, GUILayout.Height (30));
-		if(GUILayout.Button("Send Message", GUILayout.Height (55))) {
-			sendBTMessage("Message from <" + this.connectedTo + ">");
+		if(DEBUG){
+			GUI.color = Color.white;
+			GUILayout.BeginArea (new Rect (25, 100, 200, 400), "Android Bluetooth Debug", "Window");
+			GUILayout.BeginVertical ();
+			GUILayout.TextArea (algo.ToString(), GUILayout.Height (30));
+			string mstr = "";
+			foreach (var msg in messagee) {
+				mstr += msg + "\n";
+			}
+			GUILayout.TextArea (mstr, GUILayout.Height (250));
+			GUILayout.TextArea (count, GUILayout.Height (30));
+			if(GUILayout.Button("Send Message", GUILayout.Height (55))) {
+				sendBTMessage("Message from <EARTH" + ">");
+			}
+			GUILayout.EndVertical ();
+			GUILayout.EndArea ();
 		}
-		GUILayout.EndVertical ();
-		GUILayout.EndArea ();
 	}
 
-	private byte[] ObjectToByteArray(GameAction obj)
+	public byte[] ObjectToByteArray(GameMessage obj)
 	{
 		if (obj == null)
 			return null;
@@ -137,14 +183,19 @@ public class BTManager : MonoBehaviour {
 		return ms.ToArray();
 	}
 
-	private GameAction ByteArrayToObject(byte[] Barry)
+	public GameMessage ByteArrayToObject(byte[] Barry)
 	{
-		MemoryStream memStream = new MemoryStream();
 		BinaryFormatter binForm = new BinaryFormatter();
+		MemoryStream memStream = new MemoryStream();
 		memStream.Write(Barry, 0, Barry.Length);
 		memStream.Seek(0, SeekOrigin.Begin);
-		GameAction obj = (GameAction) binForm.Deserialize(memStream);
+		GameMessage obj = (GameMessage) binForm.Deserialize(memStream);
 		return obj;
+	}
+
+	public string ByteArrayToString(byte[] Barry)
+	{
+		return System.Text.Encoding.ASCII.GetString(Barry);
 	}
 
 }

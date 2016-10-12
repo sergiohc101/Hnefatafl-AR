@@ -13,6 +13,6 @@ public class TabScript : MonoBehaviour, IPointerClickHandler{
 
 	public void OnPointerClick(PointerEventData eventData)
 	{
-		panel.SendMessage("ShowTab",index);
+		panel.SendMessage("ResetActiveTab",index);
 	}
 }

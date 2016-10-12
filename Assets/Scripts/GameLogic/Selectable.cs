@@ -26,7 +26,7 @@ public abstract class Selectable : MonoBehaviour {
 	protected IEnumerator rollOverCoroutine ()	// rollOver coroutine
 	{
 		while (true) {
-			renderer.material.color = rollOverColors[  (int)Mathf.PingPong (Time.time*12, 9.9f ) ];
+			GetComponent<Renderer>().material.color = rollOverColors[  (int)Mathf.PingPong (Time.time*12, 9.9f ) ];
 			yield return null;
 		}
 	}

@@ -23,7 +23,7 @@ public class PieceSelection : GameAction
 		Game.audio.playSelect ();
 
 		// Set Marker on selected piece
-		float h = Game.pieces[ pieceIndex ].transform.tag == "King" ? 24f : 13f ;
+		float h = Game.pieces[ pieceIndex ].transform.tag == "King" ? 25f : 14f ;
 		Game.marker.gameObject.SetActive ( true );
 		Game.marker.activate ( Game.pieces[ pieceIndex ].transform.position +
 		                        new Vector3( 0f,  h, 0f ) );
@@ -42,6 +42,15 @@ public class PieceSelection : GameAction
 		
 		// Assign TurnState
 		Game.turnState = TurnState.PIECE_SELECTED;
+	}
+
+	public override GameMessage getMessage ()
+	{	// PieceSelection function
+		GameMessage message = new GameMessage ();
+		message.bPieceSelectionMessage = true;
+		message.iIndex1 = pieceIndex;
+		message.belongsToAttacker = belongsToAttacker;
+		return message;
 	}
 	
 	private void CheckHostileZones( string selectedPieceTag )

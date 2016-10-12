@@ -29,10 +29,12 @@ public abstract class Game {
 		moveTrace = new Trace ();
 		audio = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 		p1Score = p2Score = 0;
+		/*
 		p1ScoreText = GameObject.Find("P1ScoreText").GetComponent<Text>();
 		p2ScoreText = GameObject.Find("P2ScoreText").GetComponent<Text>();
 		defenderTurnIndicator = GameObject.Find("DefenderIndicator").GetComponent<TurnIndicator>();
 		attackerTurnIndicator = GameObject.Find("AttackerIndicator").GetComponent<TurnIndicator>();
+		*/
 		loadBoard ();
 	}
 

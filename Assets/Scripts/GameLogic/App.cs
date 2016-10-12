@@ -8,13 +8,21 @@ public class App : MonoBehaviour {
 
 	void Awake () {
 		// Decide which type of game will be played:
+		/*
 		if (LocalMatch)
 			game = new LocalGame ();
 		else 
 			game = new NetworkGame ();
+		*/
 	}
 
 	void Start () {
+		// Decide which type of game will be played:
+		if (LocalMatch)
+			game = new LocalGame ();
+		else 
+			game = new NetworkGame ();
+		
 		game.initialize ();
 	}
 

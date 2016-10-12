@@ -6,13 +6,6 @@ public static class BTAdapter {
 	static AndroidJavaClass androidClass; //= new AndroidJavaClass("com.BonzoLabs.HnefataflAR.BTPlugin");
 	static AndroidJavaObject androidObj;
 
-	/*
-	public BTAdapter() {
-		AndroidJNI.AttachCurrentThread();
-		androidClass = new AndroidJavaClass("com.BonzoLabs.HnefataflAR.BTPlugin");
-	}
-	*/
-
 	#if UNITY_ANDROID
 
 	public static void initAdapter(){
@@ -54,6 +47,21 @@ public static class BTAdapter {
 		}
 	}
 
+	public static void sendBytes(byte[] packet){
+		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
+			object[] args = new object[] {packet};
+			activity.Call("sendBytes", args);
+		}
+	}
+
+	public static byte[] getBytesfromAPI(){
+		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
+			byte[] packet = activity.Call<byte[]>("returnReceivedPacket");
+			return packet;
+		}
+	}
+
+
 	public static void searchAndConnectDevice(string device){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
 			object[] args = new object[] {device};
@@ -79,7 +87,7 @@ public static class BTAdapter {
 
 	public static void discoverBTDev(){
 		using(AndroidJavaObject activity = androidClass.GetStatic<AndroidJavaObject>("mContext")){
-			activity.Call("discoverDevices");
+			activity.Call("startDiscovery");
 		}
 	}
 

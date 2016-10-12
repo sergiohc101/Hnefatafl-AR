@@ -21,11 +21,11 @@ public class ToggleMusic : MonoBehaviour {
 	{
 		if(musicToggle.isOn) {
 			// Set music On
-			gameObject.audio.Play();
+			gameObject.GetComponent<AudioSource>().Play();
 
 		} else {
 			// Set music Off
-			gameObject.audio.Stop();
+			gameObject.GetComponent<AudioSource>().Stop();
 		}
 	}
 }
